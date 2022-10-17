@@ -1,4 +1,4 @@
-%% 3
+%% 2
 
 
 %% data
@@ -48,3 +48,52 @@ titlePic = sprintf('Sample size = %d',i);
 title(titlePic);
 drawnow;
 end
+
+%% 2
+%% what happen with a rigged dice?
+
+x = [1, 2, 3, 4, 5, 6];
+p = [2/15, 1/3, 2/15, 2/15, 2/15, 2/15];
+%% (a)
+popMean = sum(x.*p);
+popVar = sum(((x-popMean).^2).*p);
+
+%% (b) (c)
+yax = [0];
+populationmean = [0];
+xax = [0];
+popmean = [0];
+partition = [0, cumsum(p)];
+
+for i = 1:250
+    u = rand;
+    if u>partition(1) && u<partition(2)
+        dice = 1;
+    elseif u>partition(2) && u<partition(3)
+        dice = 2;
+    elseif u>partition(3) && u<partition(4)
+        dice = 3;
+    elseif u>partition(4) && u<partition(5)
+        dice = 4;
+    elseif u>partition(5) && u<partition(6)
+        dice = 5;
+    elseif u>partition(6) && u<partition(7)
+        dice = 6;
+    end
+    
+yax(i) = dice;
+populationmean(i) = mean(yax);
+xax(i) = i;    
+popmean(i) = 3.2;
+plot(xax, populationmean, xax, popmean)
+ylabel('roll of dice result')
+ylim([0,6])
+xlim([1,250])
+legend('Sample mean','Population mean')
+titlePic = sprintf('Sample size = %d',i); %tite changes while sapling size increases
+title(titlePic);
+drawnow;
+end 
+
+%%
+close
